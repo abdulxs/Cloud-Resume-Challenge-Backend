@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'Lambda function to update and get visitor count'
+
+Resources:
+  VisitorCountFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.8
+      CodeUri: .
+      FunctionName: VisitorCountFunction
+      Timeout: 10
+      MemorySize: 128
+      Role: arn:aws:iam::913616586420:role/service-role/resumeFunction-role-0usim4jj
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
