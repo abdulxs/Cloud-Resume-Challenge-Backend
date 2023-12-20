@@ -32,7 +32,7 @@ jobs:
 #came with the template
     
     - uses: actions/checkout@v1
-    - uses: falnyr/aws-sam-deploy-action@v1.3.0
+    - uses: abdulxs/aws-sam-deploy-action@v1.3.0
       env:
         TEMPLATE: 'template.yaml'
         AWS_STACK_NAME: resumeSAM
