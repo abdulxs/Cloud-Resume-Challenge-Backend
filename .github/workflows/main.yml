@@ -1,4 +1,4 @@
-name: "Deploy SAM Stack to Production"
+name: "Deploy the SAM Stack to Production"
 on:
   push:
     branches:
