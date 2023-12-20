@@ -3,7 +3,7 @@ import boto3
 
 AWS_REGION = 'eu-north-1'
 
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
 table = dynamodb.Table('Resume')  # Replace with your actual table name
 
 def lambda_handler(event, context):
