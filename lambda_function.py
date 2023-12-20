@@ -1,6 +1,8 @@
 import json
 import boto3
 
+AWS_REGION = 'eu-north-1'
+
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Resume')  # Replace with your actual table name
 
