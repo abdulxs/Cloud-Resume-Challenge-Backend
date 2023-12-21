@@ -12,6 +12,7 @@ class TestLambdaHandler(unittest.TestCase):
             "httpMethod": "GET"
         }
         response = lambda_handler(event, None)
+        print(response)
         self.assertEqual(response['statusCode'], 200)
         self.assertEqual(response['body'], json.dumps({'visitorCount': 1}))
 
@@ -20,6 +21,7 @@ class TestLambdaHandler(unittest.TestCase):
             "httpMethod": "POST"
         }
         response = lambda_handler(event, None)
+        print(response) 
         self.assertEqual(response['statusCode'], 200)
         self.assertEqual(response['body'], json.dumps({'updatedVisitorCount': 2}))
 
@@ -28,6 +30,7 @@ class TestLambdaHandler(unittest.TestCase):
             "httpMethod": "PUT"
         }
         response = lambda_handler(event, None)
+        print(response) 
         self.assertEqual(response['statusCode'], 400)
         self.assertEqual(response['body'], json.dumps({'error': 'Unsupported method', 'receivedMethod': 'PUT'}))
 
@@ -37,6 +40,7 @@ class TestLambdaHandler(unittest.TestCase):
             {'httpMethod': 'POST'}
         ]
         responses = lambda_handler(event, None)
+        print(responses) 
         self.assertEqual(len(responses), 2)
         self.assertEqual(responses[0]['statusCode'], 200)
         self.assertEqual(responses[0]['body'], json.dumps({'visitorCount': 1}))
