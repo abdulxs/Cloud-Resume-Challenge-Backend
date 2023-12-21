@@ -2,7 +2,7 @@ import json
 import boto3
 import unittest
 
-dynamodb = boto3.resource('dynamodb')
+dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
 table = dynamodb.Table('Resume')  # Replace with your actual table name
 
 def test_lambda_handler_get_method():
