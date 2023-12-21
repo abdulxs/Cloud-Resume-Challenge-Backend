@@ -3,10 +3,8 @@ import json
 import boto3
 
 AWS_REGION = 'eu-north-1'
-session = boto3.Session(
-    aws_access_key_id='AKIA5JN6KY22ESIUXUHU',
-    aws_secret_access_key='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'
-)
+aws_access_key_id='AKIA5JN6KY22ESIUXUHU'
+aws_secret_access_key='+EuhkCFa2JaZ1HFHVul+TgxMgd3Eqfl5fC5qdCKi'
 
 dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
 table = dynamodb.Table('Resume')  # Replace with your actual table name
