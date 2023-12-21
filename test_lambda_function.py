@@ -3,9 +3,6 @@ import boto3
 import unittest
 from lambda_function import lambda_handler
 
-AWS_ACCESS_KEY_ID='AKIA5JN6KY22ESIUXUHU'
-AWS_SECRET_ACCESS_KEY='+EuhkCFa2JaZ1HFHVul+TgxMgd3Eqfl5fC5qdCKi'
-
 dynamodb = boto3.resource('dynamodb', region_name='eu-north-1')
 table = dynamodb.Table('Resume')  # Replace with your actual table name
 
