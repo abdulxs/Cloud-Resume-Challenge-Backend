@@ -1,9 +1,10 @@
+import os
 import json
 import boto3
 
 AWS_REGION = 'eu-north-1'
-AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
 dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
 table = dynamodb.Table('Resume')  # Replace with your actual table name
