@@ -4,7 +4,7 @@ from unittest.mock import patch
 from lambda_function import lambda_handler
 
 class TestLambdaFunction(unittest.TestCase):
-    @patch('boto3.resource')
+    @patch('lamda_function.boto3.resource')
     def test_get_visitor_count_success(self, mock_dynamodb_resource):
         mock_table = mock_dynamodb_resource.return_value.Table.return_value
         mock_table.get_item.return_value = {'Item': {'visitorCount': '1', 'count': 10}}
@@ -26,7 +26,7 @@ class TestLambdaFunction(unittest.TestCase):
         self.assertEqual(response['statusCode'], 200)
         self.assertEqual(json.loads(response['body']), {'visitorCount': 10})
 
-    @patch('boto3.resource')
+    @patch('lamda_function.boto3.resource')
     def test_get_visitor_count_error(self, mock_dynamodb_resource):
         mock_table = mock_dynamodb_resource.return_value.Table.return_value
         mock_table.get_item.side_effect = Exception('Some error')
@@ -48,7 +48,7 @@ class TestLambdaFunction(unittest.TestCase):
         self.assertEqual(response['statusCode'], 500)
         self.assertIn('error', json.loads(response['body']))
 
-    @patch('boto3.resource')
+    @patch('lamda_function.boto3.resource')
     def test_update_visitor_count_success(self, mock_dynamodb_resource):
         mock_table = mock_dynamodb_resource.return_value.Table.return_value
         mock_table.update_item.return_value = {'Attributes': {'count': 11}}
@@ -76,7 +76,7 @@ class TestLambdaFunction(unittest.TestCase):
         self.assertEqual(response['statusCode'], 200)
         self.assertEqual(json.loads(response['body']), {'updatedVisitorCount': 11})
 
-    @patch('boto3.resource')
+    @patch('lamda_function.boto3.resource')
     def test_update_visitor_count_error(self, mock_dynamodb_resource):
         mock_table = mock_dynamodb_resource.return_value.Table.return_value
         mock_table.update_item.side_effect = Exception('Some error')
@@ -104,7 +104,7 @@ class TestLambdaFunction(unittest.TestCase):
         self.assertEqual(response['statusCode'], 500)
         self.assertIn('error', json.loads(response['body']))
 
-    @patch('boto3.resource')
+    @patch('lamda_function.boto3.resource')
     def test_unsupported_method(self, mock_dynamodb_resource):
         # Construct the event for an unsupported method
         event = {
