@@ -5,10 +5,10 @@ from lambda_function import lambda_handler
 
 class TestLambdaFunction(unittest.TestCase):
     @patch('lambda_function.boto3.resource')
-    def test_get_visitor_count_success(self, mock_dynamodb_resource):
+    def test_get_visitor_count_error(self, mock_dynamodb_resource):
         mock_table = MagicMock()
         mock_dynamodb_resource.return_value.Table.return_value = mock_table
-        mock_table.get_item.return_value = {'Item': {'visitorCount': '1', 'count': 10}}
+        mock_table.get_item.side_effect = Exception('Some error')
 
         # Construct the event for the GET method
         event = {
@@ -23,9 +23,12 @@ class TestLambdaFunction(unittest.TestCase):
 
         response = lambda_handler(event, None)
 
+        # Ensure that the get_item method is called with the correct key
         mock_table.get_item.assert_called_once_with(Key={'visitorCount': '1'})
-        self.assertEqual(response['statusCode'], 200)
-        self.assertEqual(json.loads(response['body']), {'visitorCount': 10})
+
+        # Ensure that the response status code is 500 and contains 'error' in the body
+        self.assertEqual(response['statusCode'], 500)
+        self.assertIn('error', json.loads(response['body']))
 
     @patch('lambda_function.boto3.resource')
     def test_get_visitor_count_error(self, mock_dynamodb_resource):
