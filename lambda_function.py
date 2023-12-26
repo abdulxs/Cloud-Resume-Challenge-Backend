@@ -1,8 +1,13 @@
 import os
 import json
 import boto3
+import logging
 
 AWS_REGION = 'eu-north-1'
+
+# Set up logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
 table = dynamodb.Table('Resume')  # Replace with your actual table name
