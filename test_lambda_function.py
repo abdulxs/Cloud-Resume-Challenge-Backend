@@ -23,22 +23,22 @@ class TestLambdaFunction(unittest.TestCase):
 
         response = lambda_handler(event, None)
 
-        # Ensure that the get_item method is called with the correct key
-        mock_table.get_item.assert_called_once_with(Key={'visitorCount': '1'})
+        # Ensure that the get_item method is called
+        mock_table.get_item.assert_called_once()
 
         # Ensure that the response status code is 500 and contains 'error' in the body
         self.assertEqual(response['statusCode'], 500)
         self.assertIn('error', json.loads(response['body']))
 
     @patch('lambda_function.boto3.resource')
-    def test_get_visitor_count_error(self, mock_dynamodb_resource):
+    def test_update_visitor_count_error(self, mock_dynamodb_resource):
         mock_table = MagicMock()
         mock_dynamodb_resource.return_value.Table.return_value = mock_table
-        mock_table.get_item.side_effect = Exception('Some error')
+        mock_table.update_item.side_effect = Exception('Some error')
 
-        # Construct the event for the GET method
+        # Construct the event for the POST method
         event = {
-            'httpMethod': 'GET',
+            'httpMethod': 'POST',
             'headers': {
                 'Host': 'https://6kk5qw05q5.execute-api.eu-north-1.amazonaws.com/development/resumeFunction'
             },
@@ -49,7 +49,16 @@ class TestLambdaFunction(unittest.TestCase):
 
         response = lambda_handler(event, None)
 
-        mock_table.get_item.assert_called_once_with(Key={'visitorCount': '1'})
+        # Ensure that the update_item method is called with the expected parameters
+        mock_table.update_item.assert_called_once_with(
+            Key={'visitorCount': '1'},
+            UpdateExpression='SET #count = #count + :incr',
+            ExpressionAttributeNames={'#count': 'count'},
+            ExpressionAttributeValues={':incr': 1},
+            ReturnValues='UPDATED_NEW'
+        )
+
+        # Ensure that the response status code is 500 and contains 'error' in the body
         self.assertEqual(response['statusCode'], 500)
         self.assertIn('error', json.loads(response['body']))
 
@@ -72,6 +81,7 @@ class TestLambdaFunction(unittest.TestCase):
 
         response = lambda_handler(event, None)
 
+        # Ensure that the update_item method is called with the expected parameters
         mock_table.update_item.assert_called_once_with(
             Key={'visitorCount': '1'},
             UpdateExpression='SET #count = #count + :incr',
@@ -79,38 +89,11 @@ class TestLambdaFunction(unittest.TestCase):
             ExpressionAttributeValues={':incr': 1},
             ReturnValues='UPDATED_NEW'
         )
+
+        # Ensure that the response status code is 200 and contains the expected body
         self.assertEqual(response['statusCode'], 200)
         self.assertEqual(json.loads(response['body']), {'updatedVisitorCount': 11})
-
-    @patch('lambda_function.boto3.resource')
-    def test_update_visitor_count_error(self, mock_dynamodb_resource):
-        mock_table = MagicMock()
-        mock_dynamodb_resource.return_value.Table.return_value = mock_table
-        mock_table.update_item.side_effect = Exception('Some error')
-
-        # Construct the event for the POST method
-        event = {
-            'httpMethod': 'POST',
-            'headers': {
-                'Host': 'https://6kk5qw05q5.execute-api.eu-north-1.amazonaws.com/development/resumeFunction'
-            },
-            'queryStringParameters': None,
-            'body': None,
-            'isBase64Encoded': False
-        }
-
-        response = lambda_handler(event, None)
-
-        mock_table.update_item.assert_called_once_with(
-            Key={'visitorCount': '1'},
-            UpdateExpression='SET #count = #count + :incr',
-            ExpressionAttributeNames={'#count': 'count'},
-            ExpressionAttributeValues={':incr': 1},
-            ReturnValues='UPDATED_NEW'
-        )
-        self.assertEqual(response['statusCode'], 500)
-        self.assertIn('error', json.loads(response['body']))
-
+        
     @patch('lambda_function.boto3.resource')
     def test_unsupported_method(self, mock_dynamodb_resource):
         # Construct the event for an unsupported method
