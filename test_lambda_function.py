@@ -30,7 +30,7 @@ class TestLambdaIntegration(unittest.TestCase):
         "Host": "https://6kk5qw05q5.execute-api.eu-north-1.amazonaws.com/development/resumeFunction"
       },
       "body": "{\"visitorCount\": \"1\", \"count\": 1}",
-      "isBase64Encoded": false
+      'isBase64Encoded': False
     }]
 
         # Call the lambda_handler function
