@@ -1,12 +1,13 @@
 import json
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from lambda_function import lambda_handler
 
 class TestLambdaFunction(unittest.TestCase):
     @patch('lambda_function.boto3.resource')
     def test_get_visitor_count_success(self, mock_dynamodb_resource):
-        mock_table = mock_dynamodb_resource.return_value.Table.return_value
+        mock_table = MagicMock()
+        mock_dynamodb_resource.return_value.Table.return_value = mock_table
         mock_table.get_item.return_value = {'Item': {'visitorCount': '1', 'count': 10}}
 
         # Construct the event for the GET method
@@ -28,7 +29,8 @@ class TestLambdaFunction(unittest.TestCase):
 
     @patch('lambda_function.boto3.resource')
     def test_get_visitor_count_error(self, mock_dynamodb_resource):
-        mock_table = mock_dynamodb_resource.return_value.Table.return_value
+        mock_table = MagicMock()
+        mock_dynamodb_resource.return_value.Table.return_value = mock_table
         mock_table.get_item.side_effect = Exception('Some error')
 
         # Construct the event for the GET method
@@ -50,7 +52,8 @@ class TestLambdaFunction(unittest.TestCase):
 
     @patch('lambda_function.boto3.resource')
     def test_update_visitor_count_success(self, mock_dynamodb_resource):
-        mock_table = mock_dynamodb_resource.return_value.Table.return_value
+        mock_table = MagicMock()
+        mock_dynamodb_resource.return_value.Table.return_value = mock_table
         mock_table.update_item.return_value = {'Attributes': {'count': 11}}
 
         # Construct the event for the POST method
@@ -78,7 +81,8 @@ class TestLambdaFunction(unittest.TestCase):
 
     @patch('lambda_function.boto3.resource')
     def test_update_visitor_count_error(self, mock_dynamodb_resource):
-        mock_table = mock_dynamodb_resource.return_value.Table.return_value
+        mock_table = MagicMock()
+        mock_dynamodb_resource.return_value.Table.return_value = mock_table
         mock_table.update_item.side_effect = Exception('Some error')
 
         # Construct the event for the POST method
@@ -124,5 +128,3 @@ class TestLambdaFunction(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-
