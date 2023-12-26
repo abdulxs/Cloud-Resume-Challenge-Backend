@@ -19,7 +19,7 @@ class TestLambdaIntegration(unittest.TestCase):
         # Construct the event for the GET method
         event = {
             'httpMethod': 'GET',
-            'headers': {'Host': 'https://example.com'},
+            'headers': {'Host': 'https://6kk5qw05q5.execute-api.eu-north-1.amazonaws.com/development/resumeFunction'},
             'queryStringParameters': None,
             'body': None,
             'isBase64Encoded': False
