@@ -7,6 +7,8 @@ AWS_REGION = 'eu-north-1'
 dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
 table = dynamodb.Table('Resume')  # Replace with your actual table name
 
+print(__name__)
+
 def lambda_handler(event, context):
     if isinstance(event, list):  # Check if it's an array
         # Process each event in the array
