@@ -15,6 +15,7 @@ table = dynamodb.Table('Resume')  # Replace with your actual table name
 print(__name__)
 
 def lambda_handler(event, context):
+    print(f"Event received: {event}")
     if isinstance(event, list):  # Check if it's an array
         # Process each event in the array
         responses = [process_single_event(e) for e in event]
@@ -24,6 +25,7 @@ def lambda_handler(event, context):
         return process_single_event(event)
 
 def process_single_event(event):
+    print(f"processing event: {event}")
     # Get method (retrieve visitor count)
     if event.get('httpMethod') == 'GET':
         try:
