@@ -48,4 +48,4 @@ jobs:
       - name: Deploy Stack
         run: |
           sam build
-          sam deploy --stack-name resumeSAM --region eu-north-1 --capabilities CAPABILITY_IAM --s3-bucket ${{ secrets.AWS_DEPLOY_BUCKET }} --parameter-overrides Key1=Value1 Key2=Value2
+          sam deploy --stack-name resumeSAM --region eu-north-1 --capabilities CAPABILITY_IAM --s3-bucket abdulgafar --parameter-overrides Key1=Value1 Key2=Value2
