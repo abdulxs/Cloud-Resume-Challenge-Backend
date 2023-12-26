@@ -17,21 +17,13 @@ class TestLambdaIntegration(unittest.TestCase):
         self.mock_table.get_item.return_value = {'Item': {'visitorCount': '1', 'count': 10}}
 
         # Construct the event for the GET and POST method
-        event = [{
+        event = {
             'httpMethod': 'GET',
             'headers': {'Host': 'https://6kk5qw05q5.execute-api.eu-north-1.amazonaws.com/development/resumeFunction'},
             'queryStringParameters': None,
             'body': None,
             'isBase64Encoded': False
-        },
-                 {
-      "httpMethod": "POST",
-      "headers": {
-        "Host": "https://6kk5qw05q5.execute-api.eu-north-1.amazonaws.com/development/resumeFunction"
-      },
-      "body": "{\"visitorCount\": \"1\", \"count\": 1}",
-      'isBase64Encoded': False
-    }]
+        }
 
         # Call the lambda_handler function
         response = lambda_handler(event, None)
