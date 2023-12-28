@@ -10,7 +10,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 dynamodb = boto3.resource('dynamodb',region_name=AWS_REGION)
-table = dynamodb.Table('Resume')  # Replace with your actual table name
+table = dynamodb.Table('Resume')
 
 print(__name__)
 
@@ -30,7 +30,7 @@ def process_single_event(event):
     if event.get('httpMethod') == 'GET':
         try:
             response = table.get_item(
-                Key={'visitorCount': '1'}  # Update the key here
+                Key={'visitorCount': '1'}
             )
             item = response.get('Item', {})
             count = item.get('count', 0)
@@ -49,7 +49,7 @@ def process_single_event(event):
     elif event.get('httpMethod') == 'POST':
         try:
             response = table.update_item(
-                Key={'visitorCount': '1'},  # Update the key here
+                Key={'visitorCount': '1'},
                 UpdateExpression='SET #count = #count + :incr',
                 ExpressionAttributeNames={'#count': 'count'},
                 ExpressionAttributeValues={':incr': 1},
