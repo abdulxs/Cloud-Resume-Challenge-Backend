@@ -15,8 +15,7 @@ class TestLambdaIntegration(unittest.TestCase):
             'httpMethod': 'GET',
             'headers': {'Host': 'https://exampleHost.com'},
             'queryStringParameters': None,
-            'body': None,
-            'isBase64Encoded': False
+            'body': None
         }
 
         # Call the lambda_handler with the sample event
