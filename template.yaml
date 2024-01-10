@@ -15,7 +15,9 @@ Resources:
     Type: AWS::Lambda::CodeSigningConfig
     Properties:
       Description: Code Signing for MyFunction
-      AllowedPublishers: !Ref MyCodeSignArn
+      AllowedPublishers: 
+        SigningProfileVersionArns:
+          - !Ref MyCodeSignArn
       CodeSigningPolicies:
         UntrustedArtifactOnDeployment: Enforce
 
