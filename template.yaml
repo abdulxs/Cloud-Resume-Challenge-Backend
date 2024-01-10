@@ -6,8 +6,20 @@ Parameters:
   MyIAMRoleArn:
     Type: String
     Description: "ARN of the IAM role for the Lambda function"
+  MyCodeSignArn:
+    Type: String
+    Description: "ARN of the Code signer for the Lambda function"
 
 Resources:
+  MySignedFunctionCodeSigningConfig:
+    Type: AWS::Lambda::CodeSigningConfig
+    Properties:
+      Description: Code Signing for MyFunction
+      AllowedPublishers: 
+        - !Ref MyCodeSignArn
+      CodeSigningPolicies:
+        UntrustedArtifactOnDeployment: Enforce
+
   VisitorCountFunction2:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -15,6 +27,7 @@ Resources:
       Runtime: python3.8
       CodeUri: .
       FunctionName: VisitorCountFunction2
+      CodeSigningConfigArn: !Ref MySignedFunctionCodeSigningConfig
       Timeout: 10
       MemorySize: 128
       Role: !Ref MyIAMRoleArn
